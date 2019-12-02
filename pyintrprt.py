@@ -7,7 +7,7 @@ work_to_do={
                          ("LOAD_NAME", 1),
                          ("ADD_TWO_VALUES", None),
                          ("PRINT_ANSWER", None)],
-        "numbers": [1, 2],
+        "numbers": [5, 7],
         "names":   ["a", "b"] }
 #
 #these are the instrutions that are crucial for understanding the basic working of an interpreter
@@ -25,15 +25,15 @@ class Interpreter:
     def LOAD_NAME(self,vname):
         val = self.map[vname]
         self.stack.append(val)
-    def parse_argument(self, instruction, argument, what_to_execute):
+    def parse_argument(self, instruction, argument, work_to_do):
         """ Understand what the argument to each instruction means."""
         numbers = ["LOAD_DATA "]
         names = ["LOAD_NAME", "STORE_NAME"]
 
         if instruction in numbers:
-            argument = what_to_execute["numbers"][argument]
+            argument = work_to_do["numbers"][argument]
         elif instruction in names:
-            argument = what_to_execute["names"][argument]
+            argument = work_to_do["names"][argument]
 
         return argument
 
@@ -50,6 +50,7 @@ class Interpreter:
         numbers=work_to_do["numbers"]
         for a in instruction:
             command,arg=a
+            arg = self.parse_argument(instruction, arg, work_to_do)
             if command is "LOAD_DATA":
                 num=numbers[arg]
                 self.LOAD_DATA(num)
